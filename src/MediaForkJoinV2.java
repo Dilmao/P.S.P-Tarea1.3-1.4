@@ -58,10 +58,9 @@ public class MediaForkJoinV2 extends RecursiveTask<Double>
     private Double getHalfSec()
     {
         double l_Media = 0.0;
-        int l_Contador;
 
         // Se sumacada elemento del array para calcular la media
-        for (l_Contador = a_Inicio; l_Contador < a_Fin; l_Contador++) {
+        for (int l_Contador = a_Inicio; l_Contador < a_Fin; l_Contador++) {
             l_Media += a_Vector[l_Contador];
         }
         l_Media /= (a_Fin - a_Inicio);
@@ -111,5 +110,8 @@ public class MediaForkJoinV2 extends RecursiveTask<Double>
         // Se imprimen los resultados obtenidos
         System.out.println("Media segun invoke: " + l_ResultadoInvoke);
         System.out.println("Media segun join: " + l_ResultadoJoin);
+
+        // Se cierra el pool
+        l_Pool.close();
     }   // main()
 }   // MediaForkJoinV2
