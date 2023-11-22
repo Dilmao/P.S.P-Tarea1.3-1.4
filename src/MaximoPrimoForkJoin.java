@@ -1,23 +1,20 @@
-import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.ForkJoinPool;
-
+import java.util.concurrent.RecursiveTask;
 
 /**********************************************************************************************************************************************
- *   APLICACIÓN: "MaximoForkJoin"                                                                                                             *
+ *   APLICACIÓN: "MaximoPrimoForkJoinV2"                                                                                                      *
  **********************************************************************************************************************************************
  *   PROGRAMACIÓN DE SERVICIOS Y PROCESOS 2DAM  -  Eclipse IDE for Java Developers v2021-09 (4.21.0)                                          *
  **********************************************************************************************************************************************
- *   @author  S.García                                                                                                                        *
- *   @version 1.1 - Retoques en la codificación y en los comentarios.                                                                         *
- *            1.0 - Versión inicial del algoritmo.                                                                                            *
- *   @since   03NOV2023                                                                                                                       *
- *            29OCT2021                                                                                                                       *
+ *   @author D.Lacasa                                                                                                                         *
+ *   @version 1.0 - Versión inicial del algoritmo.                                                                                            *
+ *   @since 22NOV2023                                                                                                                         *
  **********************************************************************************************************************************************
  *   COMENTARIOS:                                                                                                                             *
- *      - Busca el valor máximo dentro de un array, de forma recursiva hasta un determinado umbral, y luego de forma iterativa.               *
- *      - El máximo se inserta siempre en la misma posición del array para que, al jugar con el umbral, no influya en el tiempo de búsqueda.  *
+ *      - Separa un array en dos mitades para despus calcular la media de cada una                                                            *                                                                                                                                     *
  **********************************************************************************************************************************************/
-public class MaximoForkJoin extends RecursiveTask<Short>
+
+public class MaximoPrimoForkJoin extends RecursiveTask<Short>
 {
     // private static final int UMBRAL = 10_000;     // Umbral alternativo para pruebas.
     private static final int UMBRAL = 10_000_000;
@@ -27,15 +24,15 @@ public class MaximoForkJoin extends RecursiveTask<Short>
     private int a_Inicio, a_Fin = 0;
 
 
-    public MaximoForkJoin() { }
+    public MaximoPrimoForkJoin() { }
 
 
-    public MaximoForkJoin(short[] p_Vector, int p_Inicio, int p_Fin)
+    public MaximoPrimoForkJoin(short[] p_Vector, int p_Inicio, int p_Fin)
     {
         this.a_Vector = p_Vector;
         this.a_Inicio = p_Inicio;
         this.a_Fin = p_Fin;
-    }   // MaximoForkJoin()
+    }   // MaximoPrimoForkJoin()
 
 
     private short getMaxRec()     // Ejecución recursiva.
@@ -118,4 +115,4 @@ public class MaximoForkJoin extends RecursiveTask<Short>
         System.out.println("Coincide con el máximo según ‘join’ que es: " + l_ResultadoJoin);
     }   // main()
 
-}   // MaximoForkJoin
+}   // MaximoPrimoForkJoin
