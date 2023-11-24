@@ -55,9 +55,12 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
         int l_Contador;
 
         // Realizamos la búsqueda de forma iterativa quedándonos con el valor mayor.
-        for (l_Contador = a_Inicio+1; l_Contador < a_Fin; l_Contador++)
-            if (a_Vector[l_Contador] > l_Max) l_Max = a_Vector[l_Contador];
-
+        for (l_Contador = a_Inicio+1; l_Contador < a_Fin; l_Contador++) {
+            //Comprobamos que el número sea primo
+            if (esPrimo(a_Vector[l_Contador])) {
+                if (a_Vector[l_Contador] > l_Max) l_Max = a_Vector[l_Contador];
+            }
+        }
         return (l_Max);
     }   // getMaxSec()
 
@@ -90,6 +93,19 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
         return (l_Array);
     }   // crearArray()
 
+    private boolean esPrimo(int numero) {
+        if (numero <= 1) {
+            return false;
+        }
+
+        for (int l_Contador = 2; l_Contador <= numero/2; l_Contador++) {
+            if (numero % l_Contador == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static void main(String[] args)
     {
@@ -111,8 +127,8 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
         l_ResultadoJoin = l_Tarea.join();
 
         System.out.println("Milisegundos empleados: " + (System.currentTimeMillis() - l_TiempoInicial));
-        System.out.println("El máximo según ‘invoke’ es: " + l_ResultadoInvoke);
-        System.out.println("Coincide con el máximo según ‘join’ que es: " + l_ResultadoJoin);
+        System.out.println("El primo máximo según ‘invoke’ es: " + l_ResultadoInvoke);
+        System.out.println("Coincide con el primo máximo según ‘join’ que es: " + l_ResultadoJoin);
     }   // main()
 
 }   // MaximoPrimoForkJoin

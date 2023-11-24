@@ -41,8 +41,8 @@ public class MaximoForkJoin extends RecursiveTask<Short>
     private short getMaxRec()     // Ejecución recursiva.
     {
         int l_Medio = ( (a_Inicio + a_Fin) / 2 ) + 1;
-        MaximoPrimoForkJoin l_Tarea1 = new MaximoPrimoForkJoin(a_Vector, a_Inicio, l_Medio);
-        MaximoPrimoForkJoin l_Tarea2 = new MaximoPrimoForkJoin(a_Vector, l_Medio, a_Fin);
+        MaximoForkJoin l_Tarea1 = new MaximoForkJoin(a_Vector, a_Inicio, l_Medio);
+        MaximoForkJoin l_Tarea2 = new MaximoForkJoin(a_Vector, l_Medio, a_Fin);
 
         // No tratamos el caso trivial pues cortaremos la recursividad en el UMBRAL.
         l_Tarea1.fork();
@@ -96,7 +96,7 @@ public class MaximoForkJoin extends RecursiveTask<Short>
 
     public static void main(String[] args)
     {
-        MaximoPrimoForkJoin l_Tarea = new MaximoPrimoForkJoin();
+        MaximoForkJoin l_Tarea = new MaximoForkJoin();
         short[] l_Data = l_Tarea.crearArray(LONGITUD_ARRAY);
         int l_Inicio = 0;
         int l_Fin = l_Data.length;
@@ -108,7 +108,7 @@ public class MaximoForkJoin extends RecursiveTask<Short>
         System.out.println("Inicio del cálculo.");
 
         // Crea la tarea, la lanza, y obtiene el resultado "invoke".
-        l_Tarea = new MaximoPrimoForkJoin(l_Data, l_Inicio, l_Fin);
+        l_Tarea = new MaximoForkJoin(l_Data, l_Inicio, l_Fin);
         l_ResultadoInvoke = l_Pool.invoke(l_Tarea);
         // Obtención del resultado "join".
         l_ResultadoJoin = l_Tarea.join();
