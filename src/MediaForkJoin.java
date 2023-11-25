@@ -11,7 +11,7 @@ import java.util.concurrent.ForkJoinPool;
  *   @since   10NOV2023                                                                                                                       *
  **********************************************************************************************************************************************
  *   COMENTARIOS:                                                                                                                             *
- *      - Separa un array en dos mitades para despus calcular la media de cada una                                                            *                                                                                                                                     *
+ *      - Separa un array en dos mitades para despus calcular la media de cada una                                                            *
  **********************************************************************************************************************************************/
 public class MediaForkJoin extends RecursiveTask<Double>
 {
