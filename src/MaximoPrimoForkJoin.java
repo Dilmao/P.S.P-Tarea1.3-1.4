@@ -116,19 +116,23 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
         int l_ResultadoInvoke;
         int l_ResultadoJoin;
         long l_TiempoInicial = System.currentTimeMillis();
-        ForkJoinPool l_Pool = new ForkJoinPool();
+        try {
+            ForkJoinPool l_Pool = new ForkJoinPool();
 
-        System.out.println("Inicio del cálculo.");
+            System.out.println("Inicio del cálculo.");
 
-        // Crea la tarea, la lanza, y obtiene el resultado "invoke".
-        l_Tarea = new MaximoPrimoForkJoin(l_Data, l_Inicio, l_Fin);
-        l_ResultadoInvoke = l_Pool.invoke(l_Tarea);
-        // Obtención del resultado "join".
-        l_ResultadoJoin = l_Tarea.join();
+            // Crea la tarea, la lanza, y obtiene el resultado "invoke".
+            l_Tarea = new MaximoPrimoForkJoin(l_Data, l_Inicio, l_Fin);
+            l_ResultadoInvoke = l_Pool.invoke(l_Tarea);
+            // Obtención del resultado "join".
+            l_ResultadoJoin = l_Tarea.join();
 
-        System.out.println("Milisegundos empleados: " + (System.currentTimeMillis() - l_TiempoInicial));
-        System.out.println("El primo máximo según ‘invoke’ es: " + l_ResultadoInvoke);
-        System.out.println("Coincide con el primo máximo según ‘join’ que es: " + l_ResultadoJoin);
+            System.out.println("Milisegundos empleados: " + (System.currentTimeMillis() - l_TiempoInicial));
+            System.out.println("El primo máximo según ‘invoke’ es: " + l_ResultadoInvoke);
+            System.out.println("Coincide con el primo máximo según ‘join’ que es: " + l_ResultadoJoin);
+        } catch (Exception e) {
+            System.err.println(">>> Error: " + e.getMessage());
+        }
     }   // main()
 
 }   // MaximoPrimoForkJoin
