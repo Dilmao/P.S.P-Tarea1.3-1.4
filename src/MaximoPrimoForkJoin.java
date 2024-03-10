@@ -14,20 +14,20 @@ import java.util.concurrent.RecursiveTask;
  *      - Separa un array en dos mitades para despus calcular la media de cada una                                                            *
  **********************************************************************************************************************************************/
 
-public class MaximoPrimoForkJoin extends RecursiveTask<Short>
+public class MaximoPrimoForkJoin extends RecursiveTask<Integer>
 {
     // private static final int UMBRAL = 10_000;     // Umbral alternativo para pruebas.
-    private static final int UMBRAL = 10_000_000;
-    private static final int LONGITUD_ARRAY = 100_000_000;
+    private static final int UMBRAL = 1_000;
+    private static final int LONGITUD_ARRAY = 100_000;
     private static final int DUMMY_MAX = 9_999;
-    private short[] a_Vector = null;
+    private int[] a_Vector = null;
     private int a_Inicio, a_Fin = 0;
 
 
     public MaximoPrimoForkJoin() { }
 
 
-    public MaximoPrimoForkJoin(short[] p_Vector, int p_Inicio, int p_Fin)
+    public MaximoPrimoForkJoin(int[] p_Vector, int p_Inicio, int p_Fin)
     {
         this.a_Vector = p_Vector;
         this.a_Inicio = p_Inicio;
@@ -35,7 +35,7 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
     }   // MaximoPrimoForkJoin()
 
 
-    private short getMaxRec()     // Ejecución recursiva.
+    private int getMaxRec()     // Ejecución recursiva.
     {
         int l_Medio = ( (a_Inicio + a_Fin) / 2 ) + 1;
         MaximoPrimoForkJoin l_Tarea1 = new MaximoPrimoForkJoin(a_Vector, a_Inicio, l_Medio);
@@ -45,30 +45,28 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
         l_Tarea1.fork();
         l_Tarea2.fork();
 
-        return ( (short) Math.max(l_Tarea1.join(), l_Tarea2.join()) );
+        return ( Math.max(l_Tarea1.join(), l_Tarea2.join()) );
     }   // getMaxRec()
 
 
-    private short getMaxSec()     // Ejecución secuencial/iterativa.
+    private int getMaxSec()     // Ejecución secuencial/iterativa.
     {
-        short l_Max = a_Vector[a_Inicio];
-        int l_Contador;
+        int l_Max = a_Vector[a_Inicio];
+        int l_Contador = 0;
 
         // Realizamos la búsqueda de forma iterativa quedándonos con el valor mayor.
         for (l_Contador = a_Inicio+1; l_Contador < a_Fin; l_Contador++) {
             //Comprobamos que el número sea primo
-            if (esPrimo(a_Vector[l_Contador])) {
-                if (a_Vector[l_Contador] > l_Max) l_Max = a_Vector[l_Contador];
-            }
+            if  (esPrimo(a_Vector[l_Contador]))  l_Max = a_Vector[l_Contador];
         }
         return (l_Max);
     }   // getMaxSec()
 
 
     @Override
-    protected Short compute()     // Llamado por invoke() e invokeAll().
+    protected Integer compute()     // Llamado por invoke() e invokeAll().
     {
-        short l_Retorno;
+        int l_Retorno;
 
         if( (a_Fin - a_Inicio) <= UMBRAL ) l_Retorno = getMaxSec();   // Ejecución secuencial/iterativa.
         else l_Retorno = getMaxRec();   // Ejecución recursiva.
@@ -77,40 +75,37 @@ public class MaximoPrimoForkJoin extends RecursiveTask<Short>
     }   // compute()
 
 
-    short[] crearArray(int p_Longitud)
+    int[] crearArray(int p_Longitud)
     {
-        short[] l_Array = new short[p_Longitud];
+        int[] l_Array = new int[p_Longitud];
         int l_Contador;
 
         for (l_Contador = 0; l_Contador < p_Longitud; l_Contador++)
         {
             // Decide un lugar fijo donde insertar el máximo para que
             // el tiempo de cada búsqueda en concreto no dependa de dónde esté.
-            if (l_Contador == ((short)(p_Longitud*0.9)))  l_Array[l_Contador] = DUMMY_MAX;
-            else l_Array[l_Contador] = (short) (1_000 * Math.random());
+            if (l_Contador == ((int)(p_Longitud*0.9)))  l_Array[l_Contador] = DUMMY_MAX;
+            else l_Array[l_Contador] = (int) (1_000 * Math.random());
         }
 
         return (l_Array);
     }   // crearArray()
 
-    private boolean esPrimo(int numero) {
-        if (numero <= 1) {
-            return false;
-        }
+    private static boolean esPrimo(int p_Numero) {
+        boolean l_EsPrimo = true;
+        int l_Indice = 2;
 
-        for (int l_Contador = 2; l_Contador <= numero/2; l_Contador++) {
-            if (numero % l_Contador == 0) {
-                return false;
-            }
-        }
-        return true;
+        while ((l_Indice <= p_Numero/l_Indice) && l_EsPrimo)
+              l_EsPrimo = ((p_Numero % l_Indice++) != 0);
+
+        return (l_EsPrimo);
     }
 
 
     public static void main(String[] args)
     {
         MaximoPrimoForkJoin l_Tarea = new MaximoPrimoForkJoin();
-        short[] l_Data = l_Tarea.crearArray(LONGITUD_ARRAY);
+        int[] l_Data = l_Tarea.crearArray(LONGITUD_ARRAY);
         int l_Inicio = 0;
         int l_Fin = l_Data.length;
         int l_ResultadoInvoke;
